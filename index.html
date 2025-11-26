@@ -3,152 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haptic Feedback Demo</title>
+    <title>Vibration Controller</title>
     <style>
-        /* CSS for a Modern, Minimalist, and Colorful UI */
-        :root {
-            /* Define a color palette using CSS Variables */
-            --primary-color: #4CAF50; /* Green */
-            --secondary-color: #2196F3; /* Blue */
-            --tertiary-color: #FF9800; /* Orange */
-            --background-color: #f7f9fc;
-            --text-color: #333;
-            --card-background: #ffffff;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
             margin: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        .container {
-            width: 90%;
-            max-width: 400px;
-            padding: 25px;
-            background-color: var(--card-background);
-            border-radius: 16px;
-            box-shadow: var(--box-shadow);
-        }
-
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-size: 1.8em;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-group {
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            align-items: center;
+            padding: 20px;
         }
-
-        .vibration-button {
-            padding: 15px 25px;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: white;
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        header {
+            margin: 20px 0 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .vibration-pad {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .vibration-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .vibration-btn {
+            background: rgba(255, 255, 255, 0.15);
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
+            padding: 18px 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
         }
-
-        /* Unique styles for each button for a colourful effect */
-        #btn-simple {
-            background-color: var(--primary-color);
+        
+        .vibration-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
         }
-        #btn-simple:active {
-            background-color: #388E3C; /* Darker green on click */
-            transform: scale(0.98);
+        
+        .vibration-btn:active {
+            transform: translateY(1px);
         }
-
-        #btn-double {
-            background-color: var(--secondary-color);
+        
+        .vibration-btn i {
+            font-size: 1.5rem;
         }
-        #btn-double:active {
-            background-color: #1565C0; /* Darker blue on click */
-            transform: scale(0.98);
+        
+        .stop-btn {
+            background: rgba(255, 59, 59, 0.8);
+            grid-column: span 2;
+            margin-top: 10px;
         }
-
-        #btn-triple {
-            background-color: var(--tertiary-color);
+        
+        .stop-btn:hover {
+            background: rgba(255, 59, 59, 0.9);
         }
-        #btn-triple:active {
-            background-color: #E65100; /* Darker orange on click */
-            transform: scale(0.98);
+        
+        .pattern-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 0.9rem;
         }
-
-        /* Hint Text Style */
-        .hint {
-            margin-top: 25px;
-            font-size: 0.9em;
-            color: #6c757d;
+        
+        .pattern-info h3 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .pattern-item {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 500px) {
+            .buttons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stop-btn {
+                grid-column: span 1;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✨ Haptic Demo</h1>
-        <div class="btn-group">
-            <button class="vibration-button" id="btn-simple">
-                Simple Pulse (200ms)
+        <header>
+            <h1>Vibration Controller</h1>
+            <p class="subtitle">Control your device's vibration motor with different patterns</p>
+        </header>
+        
+        <div class="vibration-pad">
+            <div class="vibration-icon">📳</div>
+            <p>Tap buttons below to experience different vibration patterns</p>
+        </div>
+        
+        <div class="buttons-grid">
+            <button class="vibration-btn" id="shortVibration">
+                <i>⚡</i>
+                <span>Short Burst</span>
             </button>
-            <button class="vibration-button" id="btn-double">
-                Double Tap (100-50-100)
+            
+            <button class="vibration-btn" id="longVibration">
+                <i>🌀</i>
+                <span>Long Vibration</span>
             </button>
-            <button class="vibration-button" id="btn-triple">
-                Triple Tap (50-30-50-30-50)
+            
+            <button class="vibration-btn" id="patternVibration">
+                <i>🎵</i>
+                <span>Rhythmic Pattern</span>
+            </button>
+            
+            <button class="vibration-btn" id="heartbeatVibration">
+                <i>❤️</i>
+                <span>Heartbeat</span>
+            </button>
+            
+            <button class="vibration-btn" id="sosVibration">
+                <i>🆘</i>
+                <span>SOS Signal</span>
+            </button>
+            
+            <button class="vibration-btn" id="alertVibration">
+                <i>🚨</i>
+                <span>Alert Pattern</span>
+            </button>
+            
+            <button class="vibration-btn stop-btn" id="stopVibration">
+                <i>⏹️</i>
+                <span>Stop Vibration</span>
             </button>
         </div>
-        <p class="hint">Tap the buttons on a compatible smartphone (Android) to feel the effect.</p>
+        
+        <div class="pattern-info">
+            <h3>Vibration Patterns</h3>
+            <div class="pattern-item">
+                <span>Short Burst:</span>
+                <span>100ms vibration</span>
+            </div>
+            <div class="pattern-item">
+                <span>Long Vibration:</span>
+                <span>500ms vibration</span>
+            </div>
+            <div class="pattern-item">
+                <span>Rhythmic Pattern:</span>
+                <span>200ms on/off pulses</span>
+            </div>
+            <div class="pattern-item">
+                <span>Heartbeat:</span>
+                <span>Short, short, long pattern</span>
+            </div>
+            <div class="pattern-item">
+                <span>SOS Signal:</span>
+                <span>Morse code pattern</span>
+            </div>
+            <div class="pattern-item">
+                <span>Alert Pattern:</span>
+                <span>Increasing intensity</span>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Designed for Android devices with vibration motors</p>
+        </footer>
     </div>
 
     <script>
-        // JavaScript using the Vibration API
-        document.addEventListener('DOMContentLoaded', () => {
-            const isVibrationSupported = 'vibrate' in navigator;
-
-            if (!isVibrationSupported) {
-                // Display a message if the API isn't supported (e.g., on iOS/desktop)
-                document.querySelector('h1').textContent = "⚠️ Vibration Not Supported";
-                document.querySelector('.hint').textContent = "This feature requires the Vibration API, which is typically supported only on Android browsers (e.g., Chrome/Firefox).";
-                return;
-            }
-
-            // Function to handle vibration
-            function vibratePattern(pattern) {
-                // The pattern is an array of [vibration_ms, pause_ms, vibration_ms, ...]
-                navigator.vibrate(pattern);
-            }
-
-            // --- Vibration Effects ---
-            
-            // 1. Simple Pulse: A single, short feedback
-            const simpleButton = document.getElementById('btn-simple');
-            simpleButton.addEventListener('click', () => {
-                vibratePattern(200); // Vibrate for 200 milliseconds
-            });
-
-            // 2. Double Tap: Two quick vibrations with a short pause
-            const doubleButton = document.getElementById('btn-double');
-            doubleButton.addEventListener('click', () => {
-                vibratePattern([100, 50, 100]); // Vibrate 100ms, Pause 50ms, Vibrate 100ms
-            });
-
-            // 3. Triple Tap: A very common pattern for notifications
-            const tripleButton = document.getElementById('btn-triple');
-            tripleButton.addEventListener('click', () => {
-                vibratePattern([50, 30, 50, 30, 50]); // Vibrate, Pause, Vibrate, Pause, Vibrate
+        // Check if vibration API is supported
+        if (!navigator.vibrate) {
+            alert("Vibration API is not supported on this device/browser");
+        }
+        
+        // Get all vibration buttons
+        const shortVibrationBtn = document.getElementById('shortVibration');
+        const longVibrationBtn = document.getElementById('longVibration');
+        const patternVibrationBtn = document.getElementById('patternVibration');
+        const heartbeatVibrationBtn = document.getElementById('heartbeatVibration');
+        const sosVibrationBtn = document.getElementById('sosVibration');
+        const alertVibrationBtn = document.getElementById('alertVibration');
+        const stopVibrationBtn = document.getElementById('stopVibration');
+        
+        // Vibration patterns
+        const vibrationPatterns = {
+            short: 100,
+            long: 500,
+            pattern: [200, 100, 200, 100, 200],
+            heartbeat: [100, 100, 100, 500, 100, 100, 100, 500],
+            sos: [100, 100, 100, 100, 100, 300, 300, 100, 300, 100, 300, 300, 100, 100, 100, 100, 100],
+            alert: [100, 50, 100, 50, 200, 50, 200, 50, 300]
+        };
+        
+        // Add event listeners to buttons
+        shortVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(vibrationPatterns.short);
+        });
+        
+        longVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(vibrationPatterns.long);
+        });
+        
+        patternVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(vibrationPatterns.pattern);
+        });
+        
+        heartbeatVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(vibrationPatterns.heartbeat);
+        });
+        
+        sosVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(vibrationPatterns.sos);
+        });
+        
+        alertVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(vibrationPatterns.alert);
+        });
+        
+        stopVibrationBtn.addEventListener('click', () => {
+            navigator.vibrate(0);
+        });
+        
+        // Add visual feedback when buttons are pressed
+        const vibrationButtons = document.querySelectorAll('.vibration-btn');
+        vibrationButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Add active class for visual feedback
+                this.classList.add('active');
+                
+                // Remove active class after animation completes
+                setTimeout(() => {
+                    this.classList.remove('active');
+                }, 300);
             });
         });
     </script>
