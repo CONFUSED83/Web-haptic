@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haptic Feedback Demo</title>
+    <style>
+        /* CSS for a Modern, Minimalist, and Colorful UI */
+        :root {
+            /* Define a color palette using CSS Variables */
+            --primary-color: #4CAF50; /* Green */
+            --secondary-color: #2196F3; /* Blue */
+            --tertiary-color: #FF9800; /* Orange */
+            --background-color: #f7f9fc;
+            --text-color: #333;
+            --card-background: #ffffff;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            background-color: var(--card-background);
+            border-radius: 16px;
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .vibration-button {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Unique styles for each button for a colourful effect */
+        #btn-simple {
+            background-color: var(--primary-color);
+        }
+        #btn-simple:active {
+            background-color: #388E3C; /* Darker green on click */
+            transform: scale(0.98);
+        }
+
+        #btn-double {
+            background-color: var(--secondary-color);
+        }
+        #btn-double:active {
+            background-color: #1565C0; /* Darker blue on click */
+            transform: scale(0.98);
+        }
+
+        #btn-triple {
+            background-color: var(--tertiary-color);
+        }
+        #btn-triple:active {
+            background-color: #E65100; /* Darker orange on click */
+            transform: scale(0.98);
+        }
+
+        /* Hint Text Style */
+        .hint {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Haptic Demo</h1>
+        <div class="btn-group">
+            <button class="vibration-button" id="btn-simple">
+                Simple Pulse (200ms)
+            </button>
+            <button class="vibration-button" id="btn-double">
+                Double Tap (100-50-100)
+            </button>
+            <button class="vibration-button" id="btn-triple">
+                Triple Tap (50-30-50-30-50)
+            </button>
+        </div>
+        <p class="hint">Tap the buttons on a compatible smartphone (Android) to feel the effect.</p>
+    </div>
+
+    <script>
+        // JavaScript using the Vibration API
+        document.addEventListener('DOMContentLoaded', () => {
+            const isVibrationSupported = 'vibrate' in navigator;
+
+            if (!isVibrationSupported) {
+                // Display a message if the API isn't supported (e.g., on iOS/desktop)
+                document.querySelector('h1').textContent = "⚠️ Vibration Not Supported";
+                document.querySelector('.hint').textContent = "This feature requires the Vibration API, which is typically supported only on Android browsers (e.g., Chrome/Firefox).";
+                return;
+            }
+
+            // Function to handle vibration
+            function vibratePattern(pattern) {
+                // The pattern is an array of [vibration_ms, pause_ms, vibration_ms, ...]
+                navigator.vibrate(pattern);
+            }
+
+            // --- Vibration Effects ---
+            
+            // 1. Simple Pulse: A single, short feedback
+            const simpleButton = document.getElementById('btn-simple');
+            simpleButton.addEventListener('click', () => {
+                vibratePattern(200); // Vibrate for 200 milliseconds
+            });
+
+            // 2. Double Tap: Two quick vibrations with a short pause
+            const doubleButton = document.getElementById('btn-double');
+            doubleButton.addEventListener('click', () => {
+                vibratePattern([100, 50, 100]); // Vibrate 100ms, Pause 50ms, Vibrate 100ms
+            });
+
+            // 3. Triple Tap: A very common pattern for notifications
+            const tripleButton = document.getElementById('btn-triple');
+            tripleButton.addEventListener('click', () => {
+                vibratePattern([50, 30, 50, 30, 50]); // Vibrate, Pause, Vibrate, Pause, Vibrate
+            });
+        });
+    </script>
+</body>
+</html>
